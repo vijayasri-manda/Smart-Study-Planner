@@ -1,14 +1,21 @@
 <h1 align="center">
-  <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" alt="Study Planner Animation" width="120">
+  <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100" alt="Smart Study Planner Logo">
   <br>
-  Smart Study Planner
+  🌟 Smart Study Planner 🌟
 </h1>
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="300">
+  <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="350" alt="Study Planner Animation">
 </p>
 
-<h3 align="center">🚀 Tech Stack</h3>
+<p align="center">
+  <em>Plan your studies, track your progress, and achieve your goals efficiently! 💡📚</em>
+</p>
+
+---
+
+<h2 align="center">🛠 Tech Stack</h2>
+
 <p align="center">
   <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
   <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
@@ -18,31 +25,43 @@
 
 ---
 
-<h3 align="center">📂 Project Structure</h3>
+<h2 align="center">📂 Project Structure</h2>
 
 <table>
   <tr>
-    <td><strong>File</strong></td>
-    <td><strong>Description</strong></td>
+    <th>📄 File</th>
+    <th>📝 Description</th>
   </tr>
   <tr>
     <td><code>index.html</code></td>
-    <td>Main HTML layout and UI structure.</td>
+    <td>Main layout and UI of the Smart Study Planner</td>
   </tr>
   <tr>
     <td><code>styles.css</code></td>
-    <td>Styling rules and responsive design for the planner.</td>
+    <td>Beautiful styling rules and responsive design</td>
   </tr>
   <tr>
     <td><code>script.js</code></td>
-    <td>JavaScript functions managing tasks, goals, timer, analytics, and storage.</td>
+    <td>Handles tasks, goals, timer, analytics, and local storage</td>
   </tr>
   <tr>
     <td><code>Smart Study Planner Documentation.pdf</code></td>
-    <td>Detailed documentation of the project.</td>
+    <td>Complete project documentation for reference</td>
   </tr>
 </table>
 
+---
+
+<h2 align="center">✨ Features</h2>
+
+- 📌 Add, edit, and remove study tasks  
+- ⏱ Timer for focused study sessions  
+- 📊 Track progress with analytics  
+- 💾 Store data locally for offline usage  
+- 🎯 Set goals and manage priorities efficiently  
+
+---
+
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="250">
+  <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="300" alt="Planner Fun GIF">
 </p>
