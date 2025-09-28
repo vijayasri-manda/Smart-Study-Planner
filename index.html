@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Study Planner</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-top">
+                <h1><i class="fas fa-graduation-cap"></i> Smart Study Planner</h1>
+                <div class="header-controls">
+                    <button onclick="toggleDarkMode()" class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button onclick="showSettings()" class="settings-btn">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat-item">
+                    <i class="fas fa-tasks"></i>
+                    <span id="totalTasks">0 Tasks</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span id="completedTasks">0 Completed</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-clock"></i>
+                    <span id="studyTime">0h Today</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-fire"></i>
+                    <span id="studyStreak">0 Day Streak</span>
+                </div>
+            </div>
+        </header>
+
+        <nav class="main-nav">
+            <button onclick="showSection('tasks')" class="nav-btn active" id="nav-tasks">
+                <i class="fas fa-list"></i> Tasks
+            </button>
+            <button onclick="showSection('timeline')" class="nav-btn" id="nav-timeline">
+                <i class="fas fa-calendar-alt"></i> Timeline
+            </button>
+            <button onclick="showSection('goals')" class="nav-btn" id="nav-goals">
+                <i class="fas fa-target"></i> Goals
+            </button>
+            <button onclick="showSection('exams')" class="nav-btn" id="nav-exams">
+                <i class="fas fa-clipboard-check"></i> Exams
+            </button>
+            <button onclick="showSection('materials')" class="nav-btn" id="nav-materials">
+                <i class="fas fa-book"></i> Materials
+            </button>
+            <button onclick="showSection('timer')" class="nav-btn" id="nav-timer">
+                <i class="fas fa-stopwatch"></i> Timer
+            </button>
+            <button onclick="showSection('analytics')" class="nav-btn" id="nav-analytics">
+                <i class="fas fa-chart-bar"></i> Analytics
+            </button>
+            <button onclick="showSection('achievements')" class="nav-btn" id="nav-achievements">
+                <i class="fas fa-trophy"></i> Achievements
+            </button>
+        </nav>
+
+        <!-- Tasks Section -->
+        <section id="tasks-section" class="section active">
+            <div class="add-task">
+                <div class="form-row">
+                    <input type="text" id="taskTitle" placeholder="Study task title (e.g., Review Calculus Chapter 5)">
+                    <select id="taskSubject">
+                        <option value="">Select Subject</option>
+                        <option value="mathematics">Mathematics</option>
+                        <option value="science">Science</option>
+                        <option value="language">Language Arts</option>
+                        <option value="history">History</option>
+                        <option value="computer">Computer Science</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <input type="date" id="taskDate">
+                    <input type="time" id="taskTime">
+                    <select id="taskPriority">
+                        <option value="low">Low Priority</option>
+                        <option value="medium">Medium Priority</option>
+                        <option value="high">High Priority</option>
+                    </select>
+                    <input type="number" id="taskDuration" placeholder="Duration (min)" min="15" max="480">
+                </div>
+                <button onclick="addTask()" class="btn-primary">
+                    <i class="fas fa-plus"></i> Add Study Task
+                </button>
+            </div>
+
+            <div class="filters">
+                <button onclick="filterTasks('all')" class="filter-btn active">All</button>
+                <button onclick="filterTasks('pending')" class="filter-btn">Pending</button>
+                <button onclick="filterTasks('completed')" class="filter-btn">Completed</button>
+                <button onclick="filterTasks('today')" class="filter-btn">Today</button>
+                <button onclick="filterTasks('this-week')" class="filter-btn">This Week</button>
+            </div>
+
+            <div class="task-list">
+                <h3><i class="fas fa-list-ul"></i> Study Tasks</h3>
+                <div id="taskList"></div>
+            </div>
+        </section>
+
+        <!-- Timeline Section -->
+        <section id="timeline-section" class="section">
+            <div class="timeline-header">
+                <h3><i class="fas fa-calendar-alt"></i> Study Timeline</h3>
+                <div class="view-controls">
+                    <button onclick="changeTimelineView('week')" class="view-btn active" id="week-view">Week</button>
+                    <button onclick="changeTimelineView('month')" class="view-btn" id="month-view">Month</button>
+                </div>
+            </div>
+            <div id="timelineView"></div>
+        </section>
+
+        <!-- Goals Section -->
+        <section id="goals-section" class="section">
+            <div class="goals-header">
+                <h3><i class="fas fa-target"></i> Study Goals</h3>
+                <button onclick="showAddGoalModal()" class="btn-primary">
+                    <i class="fas fa-plus"></i> Add Goal
+                </button>
+            </div>
+            <div id="goalsList"></div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics-section" class="section">
+            <h3><i class="fas fa-chart-bar"></i> Study Analytics</h3>
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <h4>Study Streak</h4>
+                    <div class="streak-display">
+                        <span id="studyStreak">0</span> days
+                    </div>
+                </div>
+                <div class="analytics-card">
+                    <h4>Weekly Progress</h4>
+                    <div class="progress-circle">
+                        <svg viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#e0e0e0" stroke-width="8"/>
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#4CAF50" stroke-width="8" 
+                                    stroke-dasharray="283" stroke-dashoffset="283" id="weeklyProgressCircle"/>
+                        </svg>
+                        <span id="weeklyProgressText">0%</span>
+                    </div>
+                </div>
+                <div class="analytics-card">
+                    <h4>Subject Distribution</h4>
+                    <div id="subjectChart"></div>
+                </div>
+                <div class="analytics-card">
+                    <h4>Study Hours This Week</h4>
+                    <div class="hours-display">
+                        <span id="weeklyHours">0</span> hours
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Exams Section -->
+        <section id="exams-section" class="section">
+            <div class="exams-header">
+                <h3><i class="fas fa-clipboard-check"></i> Exam Tracker</h3>
+                <button onclick="showAddExamModal()" class="btn-primary">
+                    <i class="fas fa-plus"></i> Add Exam
+                </button>
+            </div>
+            <div class="exam-countdowns">
+                <div id="examCountdowns"></div>
+            </div>
+            <div class="exams-list">
+                <h4>Upcoming Exams</h4>
+                <div id="examsList"></div>
+            </div>
+        </section>
+
+        <!-- Study Materials Section -->
+        <section id="materials-section" class="section">
+            <div class="materials-header">
+                <h3><i class="fas fa-book"></i> Study Materials</h3>
+                <button onclick="showAddMaterialModal()" class="btn-primary">
+                    <i class="fas fa-plus"></i> Add Material
+                </button>
+            </div>
+            <div class="materials-grid">
+                <div id="materialsList"></div>
+            </div>
+        </section>
+
+        <!-- Timer Section -->
+        <section id="timer-section" class="section">
+            <div class="timer-container">
+                <h3><i class="fas fa-stopwatch"></i> Study Timer</h3>
+                <div class="timer-display">
+                    <div class="time-circle">
+                        <span id="timerDisplay">25:00</span>
+                    </div>
+                </div>
+                <div class="timer-controls">
+                    <button onclick="startTimer()" id="timerStart" class="btn-timer">
+                        <i class="fas fa-play"></i> Start
+                    </button>
+                    <button onclick="pauseTimer()" id="timerPause" class="btn-timer" disabled>
+                        <i class="fas fa-pause"></i> Pause
+                    </button>
+                    <button onclick="resetTimer()" id="timerReset" class="btn-timer">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                </div>
+                <div class="timer-settings">
+                    <label>Study Session: <input type="number" id="studyMinutes" value="25" min="5" max="60"></label>
+                    <label>Break Time: <input type="number" id="breakMinutes" value="5" min="1" max="30"></label>
+                </div>
+                <div class="session-info">
+                    <p>Session: <span id="sessionCount">1</span> | Break: <span id="breakCount">0</span></p>
+                </div>
+                <div class="timer-features">
+                    <button onclick="playAmbientSound()" class="btn-feature">
+                        <i class="fas fa-volume-up"></i> Ambient Sound
+                    </button>
+                    <button onclick="toggleFocusMode()" class="btn-feature">
+                        <i class="fas fa-eye"></i> Focus Mode
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Achievements Section -->
+        <section id="achievements-section" class="section">
+            <h3><i class="fas fa-trophy"></i> Achievements & Gamification</h3>
+            <div class="achievements-grid">
+                <div class="achievement-card">
+                    <h4>Study Streak</h4>
+                    <div class="achievement-display">
+                        <i class="fas fa-fire"></i>
+                        <span id="achievementStreak">0</span> days
+                    </div>
+                    <div class="achievement-progress">
+                        <div class="progress-bar-small">
+                            <div class="progress-fill-small" id="streakProgress"></div>
+                        </div>
+                        <span>Next milestone: 7 days</span>
+                    </div>
+                </div>
+                <div class="achievement-card">
+                    <h4>Tasks Completed</h4>
+                    <div class="achievement-display">
+                        <i class="fas fa-check-circle"></i>
+                        <span id="achievementTasks">0</span> tasks
+                    </div>
+                    <div class="achievement-progress">
+                        <div class="progress-bar-small">
+                            <div class="progress-fill-small" id="tasksProgress"></div>
+                        </div>
+                        <span>Next milestone: 50 tasks</span>
+                    </div>
+                </div>
+                <div class="achievement-card">
+                    <h4>Study Hours</h4>
+                    <div class="achievement-display">
+                        <i class="fas fa-clock"></i>
+                        <span id="achievementHours">0</span> hours
+                    </div>
+                    <div class="achievement-progress">
+                        <div class="progress-bar-small">
+                            <div class="progress-fill-small" id="hoursProgress"></div>
+                        </div>
+                        <span>Next milestone: 100 hours</span>
+                    </div>
+                </div>
+            </div>
+            <div class="badges-section">
+                <h4>Recent Badges</h4>
+                <div id="recentBadges"></div>
+            </div>
+        </section>
+
+        <div class="progress">
+            <h3><i class="fas fa-chart-line"></i> Overall Progress</h3>
+            <div class="progress-bar">
+                <div id="progressFill"></div>
+            </div>
+            <span id="progressText">0% Complete</span>
+        </div>
+    </div>
+
+    <!-- Goal Modal -->
+    <div id="goalModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeGoalModal()">&times;</span>
+            <h3>Add Study Goal</h3>
+            <form id="goalForm">
+                <input type="text" id="goalTitle" placeholder="Goal title (e.g., Master Calculus)">
+                <select id="goalSubject">
+                    <option value="">Select Subject</option>
+                    <option value="mathematics">Mathematics</option>
+                    <option value="science">Science</option>
+                    <option value="language">Language Arts</option>
+                    <option value="history">History</option>
+                    <option value="computer">Computer Science</option>
+                    <option value="other">Other</option>
+                </select>
+                <input type="date" id="goalDeadline">
+                <textarea id="goalDescription" placeholder="Goal description and milestones"></textarea>
+                <button type="submit" class="btn-primary">Add Goal</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Exam Modal -->
+    <div id="examModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeExamModal()">&times;</span>
+            <h3>Add Exam</h3>
+            <form id="examForm">
+                <input type="text" id="examTitle" placeholder="Exam title (e.g., Calculus Midterm)">
+                <select id="examSubject">
+                    <option value="">Select Subject</option>
+                    <option value="mathematics">Mathematics</option>
+                    <option value="science">Science</option>
+                    <option value="language">Language Arts</option>
+                    <option value="history">History</option>
+                    <option value="computer">Computer Science</option>
+                    <option value="other">Other</option>
+                </select>
+                <input type="datetime-local" id="examDateTime">
+                <input type="number" id="examDuration" placeholder="Duration (minutes)" min="30" max="300">
+                <select id="examType">
+                    <option value="midterm">Midterm</option>
+                    <option value="final">Final</option>
+                    <option value="quiz">Quiz</option>
+                    <option value="assignment">Assignment</option>
+                    <option value="project">Project</option>
+                </select>
+                <textarea id="examNotes" placeholder="Study notes and preparation tips"></textarea>
+                <button type="submit" class="btn-primary">Add Exam</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Material Modal -->
+    <div id="materialModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeMaterialModal()">&times;</span>
+            <h3>Add Study Material</h3>
+            <form id="materialForm">
+                <input type="text" id="materialTitle" placeholder="Material title (e.g., Calculus Textbook)">
+                <select id="materialType">
+                    <option value="textbook">Textbook</option>
+                    <option value="notes">Notes</option>
+                    <option value="video">Video</option>
+                    <option value="article">Article</option>
+                    <option value="practice">Practice Problems</option>
+                    <option value="other">Other</option>
+                </select>
+                <select id="materialSubject">
+                    <option value="">Select Subject</option>
+                    <option value="mathematics">Mathematics</option>
+                    <option value="science">Science</option>
+                    <option value="language">Language Arts</option>
+                    <option value="history">History</option>
+                    <option value="computer">Computer Science</option>
+                    <option value="other">Other</option>
+                </select>
+                <input type="url" id="materialUrl" placeholder="URL (optional)">
+                <textarea id="materialDescription" placeholder="Description and usage notes"></textarea>
+                <button type="submit" class="btn-primary">Add Material</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSettingsModal()">&times;</span>
+            <h3>Settings</h3>
+            <div class="settings-content">
+                <div class="setting-group">
+                    <h4>Notifications</h4>
+                    <label><input type="checkbox" id="enableNotifications"> Enable notifications</label>
+                    <label><input type="checkbox" id="enableSounds"> Enable sound effects</label>
+                    <label><input type="checkbox" id="enableReminders"> Enable study reminders</label>
+                </div>
+                <div class="setting-group">
+                    <h4>Timer Settings</h4>
+                    <label>Default study session: <input type="number" id="defaultStudyTime" value="25" min="5" max="60"> minutes</label>
+                    <label>Default break time: <input type="number" id="defaultBreakTime" value="5" min="1" max="30"> minutes</label>
+                </div>
+                <div class="setting-group">
+                    <h4>Data Management</h4>
+                    <button onclick="exportData()" class="btn-secondary">Export Data</button>
+                    <button onclick="importData()" class="btn-secondary">Import Data</button>
+                    <button onclick="clearAllData()" class="btn-danger">Clear All Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
